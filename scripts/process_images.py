@@ -78,6 +78,7 @@ def main():
 
             log_usage(
                 db,
+                tenant_id=image.tenant_id,
                 operation="vision",
                 provider=vision.name,
                 model=vision.model,
@@ -128,6 +129,7 @@ def main():
 
             log_usage(
                 db,
+                tenant_id=image.tenant_id,
                 operation="embedding",
                 provider=embedder.name,
                 model=embedder.model,

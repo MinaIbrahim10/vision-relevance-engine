@@ -328,6 +328,7 @@ def main():
 
                             db.add(
                                 AIUsage(
+                                    tenant_id=image.tenant_id,
                                     operation="vision",
                                     provider=vision.name,
                                     model=vision.model,
@@ -338,6 +339,7 @@ def main():
 
                             db.add(
                                 AIUsage(
+                                    tenant_id=image.tenant_id,
                                     operation="embedding",
                                     provider=embedder.name,
                                     model=embedder.model,

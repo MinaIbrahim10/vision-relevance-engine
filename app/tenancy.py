@@ -1,8 +1,10 @@
+import hashlib
 import secrets
 
 from fastapi import Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.db import get_db
 from app.models import Tenant
 
@@ -10,10 +12,26 @@ from app.models import Tenant
 DEFAULT_TENANT_SLUG = "demo"
 
 
-def ensure_demo_tenant(db: Session) -> Tenant:
+def hash_api_key(value: str) -> str:
+    return hashlib.sha256(
+        value.encode("utf-8")
+    ).hexdigest()
+
+
+def create_api_key() -> str:
+    return secrets.token_urlsafe(32)
+
+
+def ensure_demo_tenant(
+    db: Session,
+) -> Tenant:
+    settings = get_settings()
+
     tenant = (
         db.query(Tenant)
-        .filter(Tenant.slug == DEFAULT_TENANT_SLUG)
+        .filter(
+            Tenant.slug == DEFAULT_TENANT_SLUG
+        )
         .first()
     )
 
@@ -23,7 +41,9 @@ def ensure_demo_tenant(db: Session) -> Tenant:
     tenant = Tenant(
         slug=DEFAULT_TENANT_SLUG,
         name="Demo Tenant",
-        api_key="demo-local-key",
+        api_key_hash=hash_api_key(
+            settings.demo_api_key
+        ),
     )
 
     db.add(tenant)
@@ -40,13 +60,27 @@ def get_tenant(
     ),
     db: Session = Depends(get_db),
 ) -> Tenant:
-    # Local demo remains easy to run.
+    settings = get_settings()
+
     if not x_api_key:
-        return ensure_demo_tenant(db)
+        if settings.app_env in {
+            "development",
+            "test",
+        }:
+            return ensure_demo_tenant(db)
+
+        raise HTTPException(
+            status_code=401,
+            detail="X-API-Key is required",
+        )
+
+    key_hash = hash_api_key(x_api_key)
 
     tenant = (
         db.query(Tenant)
-        .filter(Tenant.api_key == x_api_key)
+        .filter(
+            Tenant.api_key_hash == key_hash
+        )
         .first()
     )
 
@@ -57,7 +91,3 @@ def get_tenant(
         )
 
     return tenant
-
-
-def create_api_key() -> str:
-    return secrets.token_urlsafe(32)

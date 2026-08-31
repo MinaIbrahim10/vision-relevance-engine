@@ -3,7 +3,12 @@ import json
 import numpy as np
 from sqlalchemy.orm import Session
 
-from app.models import AIUsage, ImageAsset, Post, Suggestion
+from app.models import (
+    AIUsage,
+    ImageAsset,
+    Post,
+    Suggestion,
+)
 from app.services.guard import evaluate_candidate
 from app.services.providers import get_embedding_provider
 
@@ -15,12 +20,17 @@ def cosine_similarity(
     a = np.array(left, dtype=np.float64)
     b = np.array(right, dtype=np.float64)
 
-    denominator = np.linalg.norm(a) * np.linalg.norm(b)
+    denominator = (
+        np.linalg.norm(a)
+        * np.linalg.norm(b)
+    )
 
     if denominator == 0:
         return 0.0
 
-    return float(np.dot(a, b) / denominator)
+    return float(
+        np.dot(a, b) / denominator
+    )
 
 
 def get_post_embedding(
@@ -28,18 +38,25 @@ def get_post_embedding(
     post: Post,
 ) -> list[float]:
     if post.embedding_json:
-        return json.loads(post.embedding_json)
+        return json.loads(
+            post.embedding_json
+        )
 
     provider = get_embedding_provider()
 
-    text = f"{post.title}\n{post.body}"
-    embedding = provider.embed(text)
+    embedding = provider.embed(
+        f"{post.title}\n{post.body}"
+    )
 
-    post.embedding_json = json.dumps(embedding)
+    post.embedding_json = json.dumps(
+        embedding
+    )
+
     db.add(post)
 
     db.add(
         AIUsage(
+            tenant_id=post.tenant_id,
             operation="embedding",
             provider=provider.name,
             model=provider.model,
@@ -57,15 +74,24 @@ def match_post(
     db: Session,
     post: Post,
 ) -> Suggestion:
-    post_embedding = get_post_embedding(db, post)
+    post_embedding = get_post_embedding(
+        db,
+        post,
+    )
 
     candidates = (
         db.query(ImageAsset)
-        .filter(ImageAsset.processed.is_(True))
+        .filter(
+            ImageAsset.tenant_id
+            == post.tenant_id,
+            ImageAsset.processed.is_(True),
+        )
         .all()
     )
 
-    ranked: list[tuple[float, ImageAsset]] = []
+    ranked: list[
+        tuple[float, ImageAsset]
+    ] = []
 
     for image in candidates:
         if not image.embedding_json:
@@ -73,10 +99,17 @@ def match_post(
 
         score = cosine_similarity(
             post_embedding,
-            json.loads(image.embedding_json),
+            json.loads(
+                image.embedding_json
+            ),
         )
 
-        ranked.append((score, image))
+        ranked.append(
+            (
+                score,
+                image,
+            )
+        )
 
     ranked.sort(
         key=lambda item: item[0],
@@ -97,6 +130,7 @@ def match_post(
 
         if decision.accepted:
             suggestion = Suggestion(
+                tenant_id=post.tenant_id,
                 post_id=post.id,
                 image_id=image.id,
                 similarity=score,
@@ -111,17 +145,25 @@ def match_post(
             return suggestion
 
         rejection_reasons.append(
-            f"{image.filename}: {decision.reason}"
+            f"{image.filename}: "
+            f"{decision.reason}"
         )
 
-    reason = (
-        "No confident match. "
-        + "; ".join(rejection_reasons[:3])
-        if rejection_reasons
-        else "No confident match. No processed image candidates."
-    )
+    if rejection_reasons:
+        reason = (
+            "No confident match. "
+            + "; ".join(
+                rejection_reasons[:3]
+            )
+        )
+    else:
+        reason = (
+            "No confident match. "
+            "No processed image candidates."
+        )
 
     suggestion = Suggestion(
+        tenant_id=post.tenant_id,
         post_id=post.id,
         image_id=None,
         similarity=0.0,

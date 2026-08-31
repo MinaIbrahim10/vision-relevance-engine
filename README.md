@@ -33,3 +33,212 @@ The system analyzes image libraries, generates structured metadata, embeds image
 Initial design and repository setup.
 
 **Measured evaluation:** 10/10 correct, top-1 precision **1.00** on the repository's 10-post bounded evaluation set.
+
+## Production Architecture
+
+### Multi-Tenant Isolation
+
+The API is designed around explicit tenant isolation.
+
+Each tenant has its own:
+
+- images
+- posts
+- suggestions
+- processing jobs
+- AI usage records
+- review data
+- operational alerts
+
+Requests are scoped using the `X-API-Key` header. API keys are stored as SHA-256 hashes rather than plaintext values.
+
+The same filename may exist independently for different tenants through the composite `(tenant_id, filename)` uniqueness constraint.
+
+Cross-tenant resources are never intentionally included in matching or listing queries.
+
+### Database & Migrations
+
+Persistence uses SQLAlchemy with Alembic migrations.
+
+Create or upgrade the database with:
+
+    python -m alembic upgrade head
+
+The current schema includes:
+
+- `tenants`
+- `images`
+- `posts`
+- `suggestions`
+- `background_jobs`
+- `job_alerts`
+- `ai_usage`
+
+Indexes are included for tenant-scoped access, background-job status, image metadata, suggestions, and usage records.
+
+SQLite is supported for the reproducible local demonstration. The architecture keeps database configuration behind `DATABASE_URL`.
+
+### Background Processing
+
+Image analysis is designed as a persisted background-job workflow instead of requiring long-running AI inference inside the HTTP request lifecycle.
+
+Start the worker with:
+
+    python -m app.worker
+
+Process at most one queued job with:
+
+    python -m app.worker --once
+
+Processing jobs support:
+
+- persisted job state
+- tenant ownership
+- idempotency keys
+- bounded retries
+- progress tracking
+- persistent failure information
+- warning and error alerts
+- AI budget checking
+
+Typical states are:
+
+    queued -> running -> completed
+
+or, after a provider failure:
+
+    queued -> running -> retry -> running -> failed
+
+### Idempotency
+
+Background jobs accept an `Idempotency-Key`.
+
+Submitting the same key again for the same tenant returns the existing job instead of creating duplicate work.
+
+### AI Cost Tracking
+
+Every vision and embedding operation can be recorded in `ai_usage`.
+
+Recorded fields include:
+
+- tenant
+- operation
+- provider
+- model
+- units
+- estimated cost
+
+The local Ollama pipeline currently records `$0` provider cost while still preserving per-call attribution.
+
+A configurable budget guard prevents new AI processing after the configured tenant budget is reached.
+
+### Real AI Pipeline
+
+The measured local pipeline uses:
+
+- Vision: `llava:latest` through Ollama
+- Embeddings: `bge-m3:latest` through Ollama
+- Embedding size: 1024 dimensions
+- Semantic ranking: cosine similarity
+- Deterministic mismatch guard
+- Human-review workflow
+
+The repository contains a reproducible 40-image Wikimedia Commons corpus covering:
+
+- red fox
+- wolf
+- dog
+- bear
+- deer
+
+The bounded evaluation contains 10 labeled article/post examples.
+
+Measured result:
+
+    10 / 10 correct top-1 matches
+    Top-1 precision: 1.00
+
+This is explicitly a result on the repository's bounded evaluation set and is not presented as general model accuracy.
+
+### Threshold Calibration
+
+The semantic acceptance threshold was measured rather than selected solely to maximize the evaluation score.
+
+Observed calibration values:
+
+    Minimum best-positive similarity: 0.494570
+    Maximum unrelated-negative similarity: 0.399605
+    Midpoint: 0.447087
+    Operational threshold: 0.45
+
+This provides separation between the weakest tested correct match and the strongest tested unrelated match.
+
+### Mismatch Safety Guard
+
+Semantic similarity alone is not trusted.
+
+A candidate must also satisfy deterministic checks for:
+
+- vision confidence
+- expected subject
+- semantic category
+- minimum similarity
+
+For example, even a high-similarity wolf image is rejected for an article explicitly requiring a red fox.
+
+When no candidate passes the guard, the system returns a safe `no confident match` result rather than forcing an image.
+
+### Review Workflow
+
+Suggestions can be inspected and explicitly:
+
+- approved
+- rejected
+- annotated with reviewer notes
+
+Low-confidence vision results are flagged for review.
+
+### Reproducible Evaluation
+
+Download the image corpus with:
+
+    python -m scripts.download_corpus
+
+Seed the database with:
+
+    python -m scripts.seed
+
+Process the corpus with Ollama:
+
+    VISION_PROVIDER=ollama \
+    OLLAMA_VISION_MODEL=llava:latest \
+    EMBEDDING_PROVIDER=ollama \
+    EMBEDDING_MODEL=bge-m3:latest \
+    python -m scripts.process_images
+
+Run the evaluation with:
+
+    EMBEDDING_PROVIDER=ollama \
+    EMBEDDING_MODEL=bge-m3:latest \
+    python -m scripts.evaluate
+
+Run threshold calibration with:
+
+    EMBEDDING_PROVIDER=ollama \
+    EMBEDDING_MODEL=bge-m3:latest \
+    python -m scripts.calibrate_threshold
+
+Run the automated test suite with:
+
+    python -m pytest -q
+
+### Evidence
+
+Measured outputs, acceptance probes, threshold calibration, limitations, and implementation evidence are documented in:
+
+- `EVIDENCE.md`
+- `BUILDLOG.md`
+- `DESIGN.md`
+- `data/corpus_manifest.json`
+
+The project intentionally separates measured results from assumptions and does not report unexecuted evaluations as evidence.

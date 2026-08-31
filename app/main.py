@@ -1,21 +1,20 @@
+from uuid import uuid4
+
 from fastapi import (
-    BackgroundTasks,
     Depends,
     FastAPI,
+    Header,
     HTTPException,
 )
 from sqlalchemy.orm import Session
 
-from app.db import (
-    Base,
-    SessionLocal,
-    engine,
-    get_db,
-)
+from app.config import get_settings
+from app.db import get_db
 from app.models import (
     AIUsage,
     BackgroundJob,
     ImageAsset,
+    JobAlert,
     Post,
     Suggestion,
     Tenant,
@@ -26,16 +25,14 @@ from app.schemas import (
     PostCreate,
     ReviewCreate,
 )
+from app.services.evaluator import evaluate_top1
 from app.services.matcher import match_post
-from app.services.pipeline import process_images_job
 from app.tenancy import get_tenant
 
 
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI(
     title="Vision Relevance Engine",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 
@@ -47,7 +44,21 @@ def health():
     }
 
 
-@app.post("/api/v1/images", status_code=201)
+@app.get("/api/v1/tenant")
+def current_tenant(
+    tenant: Tenant = Depends(get_tenant),
+):
+    return {
+        "id": tenant.id,
+        "slug": tenant.slug,
+        "name": tenant.name,
+    }
+
+
+@app.post(
+    "/api/v1/images",
+    status_code=201,
+)
 def create_image(
     payload: ImageCreate,
     db: Session = Depends(get_db),
@@ -56,8 +67,10 @@ def create_image(
     existing = (
         db.query(ImageAsset)
         .filter(
-            ImageAsset.tenant_id == tenant.id,
-            ImageAsset.filename == payload.filename,
+            ImageAsset.tenant_id
+            == tenant.id,
+            ImageAsset.filename
+            == payload.filename,
         )
         .first()
     )
@@ -93,7 +106,10 @@ def list_images(
 ):
     images = (
         db.query(ImageAsset)
-        .filter(ImageAsset.tenant_id == tenant.id)
+        .filter(
+            ImageAsset.tenant_id
+            == tenant.id
+        )
         .all()
     )
 
@@ -105,14 +121,19 @@ def list_images(
             "category": image.category,
             "confidence": image.confidence,
             "processed": image.processed,
-            "needs_review": image.needs_review,
+            "needs_review": (
+                image.needs_review
+            ),
             "alt_text": image.alt_text,
         }
         for image in images
     ]
 
 
-@app.post("/api/v1/posts", status_code=201)
+@app.post(
+    "/api/v1/posts",
+    status_code=201,
+)
 def create_post(
     payload: PostCreate,
     db: Session = Depends(get_db),
@@ -140,7 +161,10 @@ def list_posts(
 ):
     posts = (
         db.query(Post)
-        .filter(Post.tenant_id == tenant.id)
+        .filter(
+            Post.tenant_id
+            == tenant.id
+        )
         .all()
     )
 
@@ -148,36 +172,71 @@ def list_posts(
         {
             "id": post.id,
             "title": post.title,
-            "expected_subject": post.expected_subject,
-            "expected_category": post.expected_category,
+            "expected_subject": (
+                post.expected_subject
+            ),
+            "expected_category": (
+                post.expected_category
+            ),
         }
         for post in posts
     ]
 
 
-@app.post("/api/v1/jobs/process-images", status_code=202)
+@app.post(
+    "/api/v1/jobs/process-images",
+    status_code=202,
+)
 def start_processing(
-    background_tasks: BackgroundTasks,
+    idempotency_key: str | None = Header(
+        default=None,
+        alias="Idempotency-Key",
+    ),
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
+    key = (
+        idempotency_key
+        or str(uuid4())
+    )
+
+    existing = (
+        db.query(BackgroundJob)
+        .filter(
+            BackgroundJob.tenant_id
+            == tenant.id,
+            BackgroundJob.idempotency_key
+            == key,
+        )
+        .first()
+    )
+
+    if existing:
+        return {
+            "job_id": existing.id,
+            "status": existing.status,
+            "idempotent": True,
+        }
+
     job = BackgroundJob(
+        tenant_id=tenant.id,
         kind="image_processing",
+        idempotency_key=key,
         status="queued",
+        max_attempts=(
+            get_settings()
+            .max_job_attempts
+        ),
     )
 
     db.add(job)
     db.commit()
     db.refresh(job)
 
-    background_tasks.add_task(
-        process_images_job,
-        SessionLocal,
-        job.id,
-    )
-
     return {
         "job_id": job.id,
         "status": job.status,
+        "idempotent": False,
     }
 
 
@@ -185,8 +244,17 @@ def start_processing(
 def get_job(
     job_id: int,
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    job = db.get(BackgroundJob, job_id)
+    job = (
+        db.query(BackgroundJob)
+        .filter(
+            BackgroundJob.id == job_id,
+            BackgroundJob.tenant_id
+            == tenant.id,
+        )
+        .first()
+    )
 
     if not job:
         raise HTTPException(
@@ -198,8 +266,11 @@ def get_job(
         "id": job.id,
         "status": job.status,
         "attempts": job.attempts,
+        "max_attempts": job.max_attempts,
         "total_items": job.total_items,
-        "completed_items": job.completed_items,
+        "completed_items": (
+            job.completed_items
+        ),
         "error": job.error,
     }
 
@@ -211,8 +282,17 @@ def get_job(
 def recommend_image(
     post_id: int,
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    post = db.get(Post, post_id)
+    post = (
+        db.query(Post)
+        .filter(
+            Post.id == post_id,
+            Post.tenant_id
+            == tenant.id,
+        )
+        .first()
+    )
 
     if not post:
         raise HTTPException(
@@ -220,13 +300,19 @@ def recommend_image(
             detail="Post not found",
         )
 
-    suggestion = match_post(db, post)
+    suggestion = match_post(
+        db,
+        post,
+    )
 
     return MatchResult(
         post_id=post.id,
         image_id=suggestion.image_id,
         similarity=suggestion.similarity,
-        accepted=suggestion.accepted_by_guard,
+        accepted=(
+            suggestion
+            .accepted_by_guard
+        ),
         reason=suggestion.reason,
     )
 
@@ -235,10 +321,17 @@ def recommend_image(
 def review_suggestion(
     payload: ReviewCreate,
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    suggestion = db.get(
-        Suggestion,
-        payload.suggestion_id,
+    suggestion = (
+        db.query(Suggestion)
+        .filter(
+            Suggestion.id
+            == payload.suggestion_id,
+            Suggestion.tenant_id
+            == tenant.id,
+        )
+        .first()
     )
 
     if not suggestion:
@@ -247,48 +340,101 @@ def review_suggestion(
             detail="Suggestion not found",
         )
 
-    suggestion.human_decision = payload.decision
-    suggestion.human_notes = payload.notes
+    suggestion.human_decision = (
+        payload.decision
+    )
+    suggestion.human_notes = (
+        payload.notes
+    )
 
     db.add(suggestion)
     db.commit()
 
     return {
-        "suggestion_id": suggestion.id,
-        "decision": suggestion.human_decision,
+        "suggestion_id": (
+            suggestion.id
+        ),
+        "decision": (
+            suggestion.human_decision
+        ),
     }
 
 
 @app.get("/api/v1/usage")
 def usage(
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    records = db.query(AIUsage).all()
+    records = (
+        db.query(AIUsage)
+        .filter(
+            AIUsage.tenant_id
+            == tenant.id
+        )
+        .all()
+    )
 
     return {
         "total_calls": len(records),
         "total_cost_usd": round(
-            sum(record.cost_usd for record in records),
+            sum(
+                record.cost_usd
+                for record in records
+            ),
             6,
         ),
         "calls": [
             {
-                "operation": record.operation,
-                "provider": record.provider,
+                "operation": (
+                    record.operation
+                ),
+                "provider": (
+                    record.provider
+                ),
                 "model": record.model,
-                "cost_usd": record.cost_usd,
+                "cost_usd": (
+                    record.cost_usd
+                ),
             }
             for record in records
         ],
     }
 
 
+@app.get("/api/v1/alerts")
+def alerts(
+    db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
+):
+    records = (
+        db.query(JobAlert)
+        .filter(
+            JobAlert.tenant_id
+            == tenant.id
+        )
+        .order_by(
+            JobAlert.created_at.desc()
+        )
+        .all()
+    )
+
+    return [
+        {
+            "id": alert.id,
+            "job_id": alert.job_id,
+            "level": alert.level,
+            "message": alert.message,
+        }
+        for alert in records
+    ]
+
+
 @app.get("/api/v1/evaluation")
 def run_evaluation(
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    from app.services.evaluator import (
-        evaluate_top1,
+    return evaluate_top1(
+        db,
+        tenant.id,
     )
-
-    return evaluate_top1(db)

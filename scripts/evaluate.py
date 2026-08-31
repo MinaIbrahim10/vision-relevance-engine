@@ -2,21 +2,29 @@ import json
 from pathlib import Path
 
 from app.db import SessionLocal
-from app.services.evaluator import (
-    evaluate_top1,
-)
+from app.services.evaluator import evaluate_top1
+from app.tenancy import ensure_demo_tenant
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "artifacts" / "evaluation.json"
+OUTPUT = (
+    ROOT
+    / "artifacts"
+    / "evaluation.json"
+)
 
 
 def main():
     db = SessionLocal()
 
     try:
-        result = evaluate_top1(
+        tenant = ensure_demo_tenant(
             db
+        )
+
+        result = evaluate_top1(
+            db,
+            tenant.id,
         )
     finally:
         db.close()

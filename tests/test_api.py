@@ -1,19 +1,11 @@
-from fastapi.testclient import TestClient
-
-from app.main import app
-
-
-client = TestClient(app)
-
-
-def test_health():
+def test_health(client):
     response = client.get("/health")
 
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
 
 
-def test_validation_rejects_empty_post():
+def test_validation_rejects_empty_post(client):
     response = client.post(
         "/api/v1/posts",
         json={

@@ -114,3 +114,21 @@ cannot be returned through another tenant context.
 
 A fresh evaluator clone can create the database through Alembic rather
 than relying on ORM create-all as the persistence contract.
+
+## Session 6 — Tenant isolation and resilient workers
+
+Production hardening was verified with executable tests rather than
+placeholder assertions.
+
+The test suite now covers:
+
+- invalid API-key rejection;
+- independent resources for two tenants using the same filename;
+- cross-tenant post access returning 404;
+- idempotent background-job creation;
+- worker processing restricted to the owning tenant;
+- bounded retry behavior;
+- persistent warning and terminal error alerts.
+
+This complements the Alembic migration and tenant-aware schema already
+verified against a fresh database.

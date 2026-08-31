@@ -15,10 +15,28 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db import Base
 
 
+class Tenant(Base):
+    __tablename__ = "tenants"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    slug: Mapped[str] = mapped_column(String(100), unique=True, index=True)
+    name: Mapped[str] = mapped_column(String(255))
+    api_key: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow,
+    )
+
+
 class ImageAsset(Base):
     __tablename__ = "images"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int] = mapped_column(
+        ForeignKey("tenants.id"),
+        index=True,
+    )
     filename: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     path: Mapped[str] = mapped_column(String(500))
 
@@ -45,6 +63,10 @@ class Post(Base):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int] = mapped_column(
+        ForeignKey("tenants.id"),
+        index=True,
+    )
     title: Mapped[str] = mapped_column(String(255))
     body: Mapped[str] = mapped_column(Text)
 
@@ -63,6 +85,10 @@ class Suggestion(Base):
     __tablename__ = "suggestions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int] = mapped_column(
+        ForeignKey("tenants.id"),
+        index=True,
+    )
 
     post_id: Mapped[int] = mapped_column(
         ForeignKey("posts.id"),
@@ -91,6 +117,10 @@ class BackgroundJob(Base):
     __tablename__ = "background_jobs"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int] = mapped_column(
+        ForeignKey("tenants.id"),
+        index=True,
+    )
     kind: Mapped[str] = mapped_column(String(100))
     status: Mapped[str] = mapped_column(String(32), index=True)
 
@@ -110,6 +140,11 @@ class AIUsage(Base):
     __tablename__ = "ai_usage"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int | None] = mapped_column(
+        ForeignKey("tenants.id"),
+        nullable=True,
+        index=True,
+    )
 
     operation: Mapped[str] = mapped_column(String(100), index=True)
     provider: Mapped[str] = mapped_column(String(100))

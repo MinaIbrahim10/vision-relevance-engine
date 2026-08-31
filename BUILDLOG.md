@@ -102,3 +102,15 @@ audit reported zero expected-subject mismatches.
 The reported evaluation metric is limited to this repository's bounded
 40-image / 10-post evaluation set and is not claimed as general model
 accuracy.
+
+## Session 5 — Persistence and tenant architecture
+
+Added Alembic migration infrastructure and tenant-aware persistence.
+
+The schema now contains a tenant entity and tenant foreign keys across
+images, posts, suggestions, jobs, and usage records. API operations are
+being migrated to explicit tenant scoping so data belonging to one tenant
+cannot be returned through another tenant context.
+
+A fresh evaluator clone can create the database through Alembic rather
+than relying on ORM create-all as the persistence contract.

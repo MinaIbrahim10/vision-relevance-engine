@@ -6,9 +6,11 @@ from app.db import (
     SessionLocal,
     engine,
 )
+from app.tenancy import ensure_demo_tenant
 from app.models import (
     ImageAsset,
     Post,
+    Tenant,
 )
 
 
@@ -128,10 +130,13 @@ def main():
     db = SessionLocal()
 
     try:
+        tenant = ensure_demo_tenant(db)
+
         for record in records:
             existing = (
                 db.query(ImageAsset)
                 .filter(
+                    ImageAsset.tenant_id == tenant.id,
                     ImageAsset.filename
                     == record["filename"]
                 )
@@ -143,6 +148,7 @@ def main():
 
             db.add(
                 ImageAsset(
+                    tenant_id=tenant.id,
                     filename=record["filename"],
                     path=record["path"],
                 )
@@ -152,6 +158,7 @@ def main():
             existing = (
                 db.query(Post)
                 .filter(
+                    Post.tenant_id == tenant.id,
                     Post.title
                     == payload["title"]
                 )
@@ -160,7 +167,10 @@ def main():
 
             if not existing:
                 db.add(
-                    Post(**payload)
+                    Post(
+                        tenant_id=tenant.id,
+                        **payload,
+                    )
                 )
 
         db.commit()

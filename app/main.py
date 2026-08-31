@@ -18,6 +18,7 @@ from app.models import (
     ImageAsset,
     Post,
     Suggestion,
+    Tenant,
 )
 from app.schemas import (
     ImageCreate,
@@ -27,6 +28,7 @@ from app.schemas import (
 )
 from app.services.matcher import match_post
 from app.services.pipeline import process_images_job
+from app.tenancy import get_tenant
 
 
 Base.metadata.create_all(bind=engine)
@@ -49,10 +51,14 @@ def health():
 def create_image(
     payload: ImageCreate,
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
     existing = (
         db.query(ImageAsset)
-        .filter(ImageAsset.filename == payload.filename)
+        .filter(
+            ImageAsset.tenant_id == tenant.id,
+            ImageAsset.filename == payload.filename,
+        )
         .first()
     )
 
@@ -64,6 +70,7 @@ def create_image(
         }
 
     image = ImageAsset(
+        tenant_id=tenant.id,
         filename=payload.filename,
         path=payload.path,
     )
@@ -82,8 +89,13 @@ def create_image(
 @app.get("/api/v1/images")
 def list_images(
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    images = db.query(ImageAsset).all()
+    images = (
+        db.query(ImageAsset)
+        .filter(ImageAsset.tenant_id == tenant.id)
+        .all()
+    )
 
     return [
         {
@@ -104,8 +116,12 @@ def list_images(
 def create_post(
     payload: PostCreate,
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    post = Post(**payload.model_dump())
+    post = Post(
+        tenant_id=tenant.id,
+        **payload.model_dump(),
+    )
 
     db.add(post)
     db.commit()
@@ -120,8 +136,13 @@ def create_post(
 @app.get("/api/v1/posts")
 def list_posts(
     db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
 ):
-    posts = db.query(Post).all()
+    posts = (
+        db.query(Post)
+        .filter(Post.tenant_id == tenant.id)
+        .all()
+    )
 
     return [
         {

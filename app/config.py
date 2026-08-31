@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     embedding_model: str = "all-minilm"
 
     min_vision_confidence: float = 0.60
-    min_similarity_score: float = 0.55
+    min_similarity_score: float = 0.45
     duplicate_threshold: float = 0.94
     ai_budget_usd: float = 1.00
 

@@ -124,6 +124,7 @@ Be specific about animal species when possible.
         payload = {
             "model": self.model,
             "stream": False,
+            "format": "json",
             "messages": [
                 {
                     "role": "user",

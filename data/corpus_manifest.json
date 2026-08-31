@@ -154,20 +154,20 @@
     "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_08.jpg",
     "subject": "wolf",
     "category": "animal",
-    "source_title": "File:Mexican Wolf 2 yfb-edit 1.jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:Mexican_Wolf_2_yfb-edit_1.jpg",
-    "license": "Public domain",
-    "artist": "Clark, Jim (U.S. Fish and Wildlife Service)"
+    "source_title": "File:Timber or Gray Wolf. Canis lupus. - Flickr - gailhampshire.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Timber_or_Gray_Wolf._Canis_lupus._-_Flickr_-_gailhampshire.jpg",
+    "license": "CC BY 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/43272765@N04\">gailhampshire</a> from Cradley, Malvern, U.K"
   },
   {
     "filename": "dog_01.jpg",
     "path": "/home/mina/vision-relevance-engine/data/corpus/dog_01.jpg",
     "subject": "dog",
     "category": "animal",
-    "source_title": "File:Domestic dog fur coat, Düsseldorf, September 2024.jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_fur_coat,_D%C3%BCsseldorf,_September_2024.jpg",
-    "license": "CC0",
-    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:K%C3%BCrschner\" title=\"User:Kürschner\">Kürschner</a> (<a href=\"//commons.wikimedia.org/wiki/User_talk:K%C3%BCrschner\" title=\"User talk:Kürschner\"><span class=\"signature-talk\">talk</span></a>) 15:22, 1 October 2024 (UTC)"
+    "source_title": "File:2014 Prowincja Wajoc Dzor, Dżermuk, Pies.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:2014_Prowincja_Wajoc_Dzor,_D%C5%BCermuk,_Pies.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Halavar\" title=\"User:Halavar\">Marcin Konsek</a>"
   },
   {
     "filename": "dog_02.jpg",
@@ -294,10 +294,10 @@
     "path": "/home/mina/vision-relevance-engine/data/corpus/bear_06.jpg",
     "subject": "bear",
     "category": "animal",
-    "source_title": "File:Brown bear at Camperdown Wildlife Centre (5).jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(5).jpg",
-    "license": "CC BY 4.0",
-    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+    "source_title": "File:Brown-Bear-Ursus-arctos.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown-Bear-Ursus-arctos.jpg",
+    "license": "Public domain",
+    "artist": "George Ursachi"
   },
   {
     "filename": "bear_07.jpg",
@@ -324,8 +324,8 @@
     "path": "/home/mina/vision-relevance-engine/data/corpus/deer_01.jpg",
     "subject": "deer",
     "category": "animal",
-    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 1.jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_1.jpg",
+    "source_title": "File:001 Marsh deer and Pink Ipê tree in Encontro das Águas State Park Photo by Giles Laurent.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:001_Marsh_deer_and_Pink_Ip%C3%AA_tree_in_Encontro_das_%C3%81guas_State_Park_Photo_by_Giles_Laurent.jpg",
     "license": "CC BY-SA 4.0",
     "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
   },
@@ -334,30 +334,30 @@
     "path": "/home/mina/vision-relevance-engine/data/corpus/deer_02.jpg",
     "subject": "deer",
     "category": "animal",
-    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 2.jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_2.jpg",
-    "license": "CC BY-SA 4.0",
-    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+    "source_title": "File:Cervus elaphus Luc Viatour 1.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Cervus_elaphus_Luc_Viatour_1.jpg",
+    "license": "CC BY-SA 3.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Lviatour\" title=\"User:Lviatour\">Lviatour</a>"
   },
   {
     "filename": "deer_03.jpg",
     "path": "/home/mina/vision-relevance-engine/data/corpus/deer_03.jpg",
     "subject": "deer",
     "category": "animal",
-    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 3.jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_3.jpg",
+    "source_title": "File:Metskits - Roe Deer - Capreolus capreolus (1).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Metskits_-_Roe_Deer_-_Capreolus_capreolus_(1).jpg",
     "license": "CC BY-SA 4.0",
-    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:KristianPikner\" title=\"User:KristianPikner\">Kristian Pikner</a>"
   },
   {
     "filename": "deer_04.jpg",
     "path": "/home/mina/vision-relevance-engine/data/corpus/deer_04.jpg",
     "subject": "deer",
     "category": "animal",
-    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 4.jpg",
-    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_4.jpg",
-    "license": "CC BY-SA 4.0",
-    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+    "source_title": "File:Columbian White-tailed Deer (52573281292).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Columbian_White-tailed_Deer_(52573281292).jpg",
+    "license": "Public domain",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/usfwspacific/\">USFWS Pacific</a>"
   },
   {
     "filename": "deer_05.jpg",

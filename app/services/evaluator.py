@@ -1,12 +1,8 @@
 from sqlalchemy.orm import Session
 
-from app.models import (
-    ImageAsset,
-    Post,
-)
-from app.services.matcher import (
-    match_post,
-)
+from app.models import ImageAsset, Post
+from app.services.guard import normalize_subject
+from app.services.matcher import match_post
 
 
 def evaluate_top1(
@@ -14,9 +10,7 @@ def evaluate_top1(
 ) -> dict:
     posts = (
         db.query(Post)
-        .filter(
-            Post.expected_subject.isnot(None)
-        )
+        .filter(Post.expected_subject.isnot(None))
         .all()
     )
 
@@ -38,54 +32,39 @@ def evaluate_top1(
             )
 
             if image:
-                predicted_subject = (
-                    image.subject
-                )
+                predicted_subject = image.subject
 
-        expected = (
+        expected_norm = normalize_subject(
             post.expected_subject
-            or ""
-        ).lower()
-
-        predicted = (
+        )
+        predicted_norm = normalize_subject(
             predicted_subject
-            or ""
-        ).lower()
+        )
 
         is_correct = (
             suggestion.accepted_by_guard
-            and expected == predicted
+            and expected_norm
+            and expected_norm == predicted_norm
         )
 
-        correct += int(
-            is_correct
-        )
+        correct += int(is_correct)
 
         results.append(
             {
                 "post_id": post.id,
                 "title": post.title,
-                "expected_subject": (
-                    post.expected_subject
-                ),
-                "predicted_subject": (
-                    predicted_subject
-                ),
-                "image_id": (
-                    suggestion.image_id
-                ),
-                "accepted": (
-                    suggestion
-                    .accepted_by_guard
-                ),
+                "expected_subject": post.expected_subject,
+                "predicted_subject": predicted_subject,
+                "normalized_expected": expected_norm,
+                "normalized_prediction": predicted_norm,
+                "image_id": suggestion.image_id,
+                "accepted": suggestion.accepted_by_guard,
                 "similarity": round(
                     suggestion.similarity,
                     6,
                 ),
                 "correct": is_correct,
-                "reason": (
-                    suggestion.reason
-                ),
+                "reason": suggestion.reason,
             }
         )
 

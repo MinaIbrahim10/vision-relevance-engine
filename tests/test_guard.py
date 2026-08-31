@@ -54,3 +54,28 @@ def test_low_similarity_is_rejected():
 
     assert decision.accepted is False
     assert "similarity" in decision.reason.lower()
+
+
+def test_wildlife_normalizes_to_animal():
+    from app.services.guard import normalize_category
+
+    assert (
+        normalize_category(
+            "Wildlife",
+            "Fox",
+        )
+        == "animal"
+    )
+
+
+def test_fox_normalizes_to_red_fox():
+    from app.services.guard import normalize_subject
+
+    assert normalize_subject("Fox") == "red fox"
+    assert normalize_subject("Vulpes vulpes") == "red fox"
+
+
+def test_plural_fox_normalizes_to_red_fox():
+    from app.services.guard import normalize_subject
+
+    assert normalize_subject("Foxes") == "red fox"

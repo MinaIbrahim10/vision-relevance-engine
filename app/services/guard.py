@@ -9,22 +9,69 @@ class GuardDecision:
     reason: str
 
 
+ANIMAL_SUBJECTS = {
+    "red fox",
+    "wolf",
+    "dog",
+    "bear",
+    "deer",
+}
+
+
 def normalize_subject(value: str | None) -> str:
     if not value:
         return ""
 
-    value = value.lower().strip()
+    text = value.lower().strip()
 
-    aliases = {
-        "fox": "red fox",
-        "red foxes": "red fox",
-        "vulpes vulpes": "red fox",
-        "wolves": "wolf",
-        "canis lupus": "wolf",
-        "dogs": "dog",
-    }
+    if (
+        "vulpes vulpes" in text
+        or "red fox" in text
+        or text in {"fox", "foxes"}
+    ):
+        return "red fox"
 
-    return aliases.get(value, value)
+    if "canis lupus" in text or "wolf" in text:
+        return "wolf"
+
+    if "dog" in text or "domestic canine" in text:
+        return "dog"
+
+    if "bear" in text:
+        return "bear"
+
+    if "deer" in text or "cervid" in text:
+        return "deer"
+
+    return text
+
+
+def normalize_category(
+    value: str | None,
+    subject: str | None = None,
+) -> str:
+    normalized_subject = normalize_subject(subject)
+
+    if normalized_subject in ANIMAL_SUBJECTS:
+        return "animal"
+
+    if not value:
+        return ""
+
+    text = value.lower().strip()
+
+    if text in {
+        "wildlife",
+        "animal",
+        "animals",
+        "mammal",
+        "mammals",
+        "fauna",
+        "wild animal",
+    }:
+        return "animal"
+
+    return text
 
 
 def evaluate_candidate(
@@ -44,10 +91,22 @@ def evaluate_candidate(
             "Vision confidence below threshold.",
         )
 
+    expected_subject_norm = normalize_subject(expected_subject)
+    image_subject_norm = normalize_subject(image_subject)
+
+    expected_category_norm = normalize_category(
+        expected_category,
+        expected_subject,
+    )
+    image_category_norm = normalize_category(
+        image_category,
+        image_subject,
+    )
+
     if (
-        expected_category
-        and image_category
-        and expected_category.lower() != image_category.lower()
+        expected_category_norm
+        and image_category_norm
+        and expected_category_norm != image_category_norm
     ):
         return GuardDecision(
             False,
@@ -57,10 +116,11 @@ def evaluate_candidate(
             ),
         )
 
-    expected = normalize_subject(expected_subject)
-    detected = normalize_subject(image_subject)
-
-    if expected and detected and expected != detected:
+    if (
+        expected_subject_norm
+        and image_subject_norm
+        and expected_subject_norm != image_subject_norm
+    ):
         return GuardDecision(
             False,
             (

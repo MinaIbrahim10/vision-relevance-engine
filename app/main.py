@@ -260,3 +260,14 @@ def usage(
             for record in records
         ],
     }
+
+
+@app.get("/api/v1/evaluation")
+def run_evaluation(
+    db: Session = Depends(get_db),
+):
+    from app.services.evaluator import (
+        evaluate_top1,
+    )
+
+    return evaluate_top1(db)

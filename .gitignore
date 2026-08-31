@@ -15,3 +15,7 @@ htmlcov/
 .vscode/
 data/generated/
 models/
+
+# Reproducible downloaded image corpus
+data/corpus/*.jpg
+artifacts/evaluation.json

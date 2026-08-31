@@ -1,0 +1,402 @@
+[
+  {
+    "filename": "fox_01.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_01.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Alaska Red Fox (Vulpes vulpes).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Alaska_Red_Fox_(Vulpes_vulpes).jpg",
+    "license": "CC BY-SA 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/22170893@N06\">Gregory \"Slobirdr\" Smith</a>"
+  },
+  {
+    "filename": "fox_02.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_02.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Common foxes in the snow.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Common_foxes_in_the_snow.jpg",
+    "license": "Public domain",
+    "artist": "<bdi><a href=\"https://en.wikipedia.org/wiki/en:Wilhelm_Kuhnert\" class=\"extiw\" title=\"w:en:Wilhelm Kuhnert\"><span title=\"German painter (1865-1926)\">Wilhelm Kuhnert</span></a></bdi>"
+  },
+  {
+    "filename": "fox_03.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_03.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Kettu (Vulpes vulpes), Inttilä, Luonnonmaa, Naantali, 13.5.2012 (6).JPG",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Kettu_(Vulpes_vulpes),_Inttil%C3%A4,_Luonnonmaa,_Naantali,_13.5.2012_(6).JPG",
+    "license": "CC BY-SA 3.0",
+    "artist": "Markus Rantala (<a href=\"//commons.wikimedia.org/wiki/User:Makele-90\" title=\"User:Makele-90\">Makele-90</a>)"
+  },
+  {
+    "filename": "fox_04.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_04.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Red Fox (Vulpes vulpes) (4).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Red_Fox_(Vulpes_vulpes)_(4).jpg",
+    "license": "CC BY-SA 3.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Ken_Billington\" title=\"User:Ken Billington\">Ken Billington</a>"
+  },
+  {
+    "filename": "fox_05.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_05.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Red Fox (Vulpes vulpes) (48490223071).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Red_Fox_(Vulpes_vulpes)_(48490223071).jpg",
+    "license": "Public domain",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/glaciernps/\">GlacierNPS</a>"
+  },
+  {
+    "filename": "fox_06.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_06.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Red Fox (Vulpes vulpes) (48490226436).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Red_Fox_(Vulpes_vulpes)_(48490226436).jpg",
+    "license": "Public domain",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/glaciernps/\">GlacierNPS</a>"
+  },
+  {
+    "filename": "fox_07.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_07.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Red Fox - Vulpes vulpes (juvenile) - 01.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Red_Fox_-_Vulpes_vulpes_(juvenile)_-_01.jpg",
+    "license": "CC BY 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/52450054@N04/\">Judy Gallagher</a>"
+  },
+  {
+    "filename": "fox_08.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/fox_08.jpg",
+    "subject": "red fox",
+    "category": "animal",
+    "source_title": "File:Red Fox - Vulpes vulpes (juvenile) - 6979215074.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Red_Fox_-_Vulpes_vulpes_(juvenile)_-_6979215074.jpg",
+    "license": "CC BY 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/52450054@N04/\">Judy Gallagher</a>"
+  },
+  {
+    "filename": "wolf_01.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_01.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Canis lupus-Wolf-Polar Park Norway-Bardu.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Canis_lupus-Wolf-Polar_Park_Norway-Bardu.jpg",
+    "license": "CC BY-SA 2.5",
+    "artist": "Hans-Petter Fjeld"
+  },
+  {
+    "filename": "wolf_02.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_02.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Canis lupus arctos IMG 9100.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Canis_lupus_arctos_IMG_9100.jpg",
+    "license": "CC BY-SA 2.0 fr",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Rama\" title=\"User:Rama\">Rama</a>"
+  },
+  {
+    "filename": "wolf_03.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_03.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Canis lupus cristaldii subsp. nov.png",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Canis_lupus_cristaldii_subsp._nov.png",
+    "license": "Public domain",
+    "artist": "Mario Migneco"
+  },
+  {
+    "filename": "wolf_04.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_04.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Canis lupus qtl2 (bearbeitet).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Canis_lupus_qtl2_(bearbeitet).jpg",
+    "license": "CC BY-SA 3.0",
+    "artist": "<ul><li>Photograph: <a href=\"//commons.wikimedia.org/wiki/User:Quartl\" title=\"User:Quartl\">Quartl</a></li>\n<li>Reworked version: <a href=\"//commons.wikimedia.org/wiki/User:Nightflyer\" title=\"User:Nightflyer\">Nightflyer</a></li></ul>"
+  },
+  {
+    "filename": "wolf_05.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_05.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Front view of a resting Canis lupus ssp.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Front_view_of_a_resting_Canis_lupus_ssp.jpg",
+    "license": "Public domain",
+    "artist": "Gary Kramer"
+  },
+  {
+    "filename": "wolf_06.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_06.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Gray Wolf (Canis lupus) (9677910158).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Gray_Wolf_(Canis_lupus)_(9677910158).jpg",
+    "license": "CC BY-SA 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/22170893@N06\">Gregory \"Slobirdr\" Smith</a>"
+  },
+  {
+    "filename": "wolf_07.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_07.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Gray Wolf - Canis lupus (51545668593).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Gray_Wolf_-_Canis_lupus_(51545668593).jpg",
+    "license": "CC BY-SA 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/22170893@N06\">Gregory  Smith</a>"
+  },
+  {
+    "filename": "wolf_08.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/wolf_08.jpg",
+    "subject": "wolf",
+    "category": "animal",
+    "source_title": "File:Mexican Wolf 2 yfb-edit 1.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Mexican_Wolf_2_yfb-edit_1.jpg",
+    "license": "Public domain",
+    "artist": "Clark, Jim (U.S. Fish and Wildlife Service)"
+  },
+  {
+    "filename": "dog_01.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_01.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog fur coat, Düsseldorf, September 2024.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_fur_coat,_D%C3%BCsseldorf,_September_2024.jpg",
+    "license": "CC0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:K%C3%BCrschner\" title=\"User:Kürschner\">Kürschner</a> (<a href=\"//commons.wikimedia.org/wiki/User_talk:K%C3%BCrschner\" title=\"User talk:Kürschner\"><span class=\"signature-talk\">talk</span></a>) 15:22, 1 October 2024 (UTC)"
+  },
+  {
+    "filename": "dog_02.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_02.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 025.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_025.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "dog_03.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_03.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 026.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_026.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "dog_04.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_04.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 031.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_031.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "dog_05.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_05.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 037.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_037.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "dog_06.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_06.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 041.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_041.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "dog_07.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_07.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 044.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_044.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "dog_08.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/dog_08.jpg",
+    "subject": "dog",
+    "category": "animal",
+    "source_title": "File:Domestic dog in Ericeira, Portugal 048.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Domestic_dog_in_Ericeira,_Portugal_048.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:TailsAndTrailsArchive\" title=\"User:TailsAndTrailsArchive\">TailsAndTrailsArchive</a>"
+  },
+  {
+    "filename": "bear_01.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_01.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown Bear us fish.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_Bear_us_fish.jpg",
+    "license": "Public domain",
+    "artist": "Hillebrand, Steve"
+  },
+  {
+    "filename": "bear_02.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_02.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre.jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "bear_03.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_03.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre (2).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(2).jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "bear_04.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_04.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre (3).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(3).jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "bear_05.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_05.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre (4).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(4).jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "bear_06.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_06.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre (5).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(5).jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "bear_07.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_07.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre (6).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(6).jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "bear_08.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/bear_08.jpg",
+    "subject": "bear",
+    "category": "animal",
+    "source_title": "File:Brown bear at Camperdown Wildlife Centre (7).jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Brown_bear_at_Camperdown_Wildlife_Centre_(7).jpg",
+    "license": "CC BY 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sahaib\" title=\"User:Sahaib\">Sahaib</a>"
+  },
+  {
+    "filename": "deer_01.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_01.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 1.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_1.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+  },
+  {
+    "filename": "deer_02.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_02.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 2.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_2.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+  },
+  {
+    "filename": "deer_03.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_03.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 3.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_3.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+  },
+  {
+    "filename": "deer_04.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_04.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:009 Wildlife Photographers in ghillie suits looking for red deers 4.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:009_Wildlife_Photographers_in_ghillie_suits_looking_for_red_deers_4.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+  },
+  {
+    "filename": "deer_05.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_05.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:014 Wild Red Deer Switzerland Photo by Giles Laurent.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:014_Wild_Red_Deer_Switzerland_Photo_by_Giles_Laurent.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+  },
+  {
+    "filename": "deer_06.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_06.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:015 Wild Red Deer Switzerland Photo by Giles Laurent.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:015_Wild_Red_Deer_Switzerland_Photo_by_Giles_Laurent.jpg",
+    "license": "CC BY-SA 4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Giles_Laurent\" title=\"User:Giles Laurent\">Giles Laurent</a>"
+  },
+  {
+    "filename": "deer_07.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_07.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:A Red Deer at Paradise Wildlife Park - geograph.org.uk - 1421230.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:A_Red_Deer_at_Paradise_Wildlife_Park_-_geograph.org.uk_-_1421230.jpg",
+    "license": "CC BY-SA 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.geograph.org.uk/profile/12912\">Lynda Poulter</a>"
+  },
+  {
+    "filename": "deer_08.jpg",
+    "path": "/home/mina/vision-relevance-engine/data/corpus/deer_08.jpg",
+    "subject": "deer",
+    "category": "animal",
+    "source_title": "File:A red deer at the Highland Wildlife Park - geograph.org.uk - 3181526.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:A_red_deer_at_the_Highland_Wildlife_Park_-_geograph.org.uk_-_3181526.jpg",
+    "license": "CC BY-SA 2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.geograph.org.uk/profile/6638\">Walter Baxter</a> <span class=\"mw-valign-text-top noprint\" typeof=\"mw:File/Frameless\"><a href=\"//commons.wikimedia.org/wiki/File:A_red_deer_at_the_Highland_Wildlife_Park_-_geograph.org.uk_-_3181526.jpg#P170\" title=\"Edit this at Structured Data on Commons\"><img alt=\"Edit this at Structured Data on Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/20px-OOjs_UI_icon_edit-ltr-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"10\" height=\"10\" class=\"mw-file-element\" data-file-width=\"20\" data-file-height=\"20\"></a></span>"
+  }
+]

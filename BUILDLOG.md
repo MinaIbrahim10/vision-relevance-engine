@@ -42,3 +42,36 @@ checking Python 3.14 wheel compatibility.
 
 This correction is intentionally documented because the build log tracks
 where AI assistance was wrong and how the implementation was verified.
+
+## Session 3 — Corpus, evaluation, and duplicate detection
+
+### Added
+
+- Reproducible Wikimedia Commons image downloader.
+- Five semantic image groups with eight images each.
+- Ten-post labeled evaluation set.
+- Deterministic processing CLI.
+- Top-1 precision evaluator and API endpoint.
+- Perceptual-hash near-duplicate detection as a stretch capability.
+
+### Evidence policy
+
+The final precision value will only be documented after an actual
+processing and evaluation run. No metric is pre-written or assumed.
+
+## Session 3 correction — Wikimedia throttling
+
+The first corpus download attempted to fetch original Wikimedia Commons
+files too aggressively. Wikimedia returned HTTP 429 responses and
+explicitly recommended using thumbnail images instead.
+
+Only five fox images were downloaded, so no corpus manifest was produced.
+The subsequent zero-item evaluation was therefore invalid and is not
+reported as a model quality result.
+
+Correction:
+- switched downloads to Wikimedia-generated 640px thumbnails;
+- added HTTP 429/5xx retry with exponential backoff;
+- added request throttling and pauses between categories;
+- retained source URLs and license metadata in the corpus manifest;
+- the phase is considered complete only if exactly 40 images are present.

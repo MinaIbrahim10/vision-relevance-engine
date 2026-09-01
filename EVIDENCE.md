@@ -57,3 +57,14 @@ threshold.
 
 Duplicate scans are tenant-scoped so images owned by another tenant are
 not considered candidates.
+
+## Stretch Capability — Human-in-the-Loop QA Agent
+
+A persisted QA agent evaluates image suggestions using guard status,
+semantic margin, vision confidence, and review flags.
+
+The agent produces `approve`, `reject`, or `review` recommendations with
+the signals and rationale used to reach that recommendation.
+
+The agent deliberately does not mutate the final human decision field.
+Human approval or rejection remains a separate explicit action.

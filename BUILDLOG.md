@@ -142,3 +142,19 @@ Implemented two capstone stretch capabilities:
 
 Both capabilities are exposed through tenant-scoped API endpoints and
 covered by executable tests, including cross-tenant duplicate isolation.
+
+## Session 8 — Human-in-the-loop QA agent
+
+Implemented the uncertain-match QA stretch capability.
+
+The QA agent:
+
+- inspects deterministic guard results;
+- checks the calibrated semantic-margin boundary;
+- checks vision confidence and review flags;
+- persists its recommendation and supporting signals;
+- is idempotent per tenant and suggestion;
+- never automatically converts its recommendation into a human decision.
+
+This preserves a real human-in-the-loop boundary rather than presenting an
+AI recommendation as final approval.

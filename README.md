@@ -242,3 +242,34 @@ Measured outputs, acceptance probes, threshold calibration, limitations, and imp
 - `data/corpus_manifest.json`
 
 The project intentionally separates measured results from assumptions and does not report unexecuted evaluations as evidence.
+
+## Human-in-the-Loop QA Agent
+
+Uncertain or high-impact suggestions can be sent through a QA agent before
+a human reviewer makes the final decision.
+
+Run QA for a suggestion:
+
+    POST /api/v1/suggestions/{suggestion_id}/qa
+
+Retrieve the persisted QA recommendation:
+
+    GET /api/v1/suggestions/{suggestion_id}/qa
+
+The agent examines:
+
+- deterministic mismatch-guard status
+- semantic similarity
+- calibrated similarity threshold
+- vision confidence
+- low-confidence review flags
+- expected and detected subjects
+
+Possible recommendations are:
+
+- `approve`
+- `reject`
+- `review`
+
+The QA agent never writes the final human decision. A reviewer still uses
+the review workflow to approve or reject the suggestion.

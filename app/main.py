@@ -605,3 +605,76 @@ def image_duplicates(
         "threshold": threshold,
         "duplicates": matches,
     }
+
+
+@app.post(
+    "/api/v1/suggestions/{suggestion_id}/qa"
+)
+def run_qa_agent(
+    suggestion_id: int,
+    db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
+):
+    from app.services.qa_agent import (
+        run_suggestion_qa,
+        serialize_qa_review,
+    )
+
+    suggestion = (
+        db.query(Suggestion)
+        .filter(
+            Suggestion.id == suggestion_id,
+            Suggestion.tenant_id == tenant.id,
+        )
+        .first()
+    )
+
+    if not suggestion:
+        raise HTTPException(
+            status_code=404,
+            detail="Suggestion not found",
+        )
+
+    review = run_suggestion_qa(
+        db,
+        suggestion,
+    )
+
+    return serialize_qa_review(
+        review
+    )
+
+
+@app.get(
+    "/api/v1/suggestions/{suggestion_id}/qa"
+)
+def get_qa_agent_result(
+    suggestion_id: int,
+    db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
+):
+    from app.models import QAReview
+    from app.services.qa_agent import (
+        serialize_qa_review,
+    )
+
+    review = (
+        db.query(QAReview)
+        .filter(
+            QAReview.suggestion_id
+            == suggestion_id,
+            QAReview.tenant_id
+            == tenant.id,
+        )
+        .first()
+    )
+
+    if not review:
+        raise HTTPException(
+            status_code=404,
+            detail="QA review not found",
+        )
+
+    return serialize_qa_review(
+        review
+    )

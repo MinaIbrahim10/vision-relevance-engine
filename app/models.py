@@ -258,6 +258,48 @@ class JobAlert(Base):
     )
 
 
+class QAReview(Base):
+    __tablename__ = "qa_reviews"
+    __table_args__ = (
+        UniqueConstraint(
+            "tenant_id",
+            "suggestion_id",
+            name="uq_qa_review_tenant_suggestion",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    tenant_id: Mapped[int] = mapped_column(
+        ForeignKey("tenants.id"),
+        index=True,
+    )
+
+    suggestion_id: Mapped[int] = mapped_column(
+        ForeignKey("suggestions.id"),
+        index=True,
+    )
+
+    recommendation: Mapped[str] = mapped_column(
+        String(32),
+        index=True,
+    )
+
+    rationale: Mapped[str] = mapped_column(Text)
+
+    signals_json: Mapped[str] = mapped_column(Text)
+
+    requires_human: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=utc_now,
+    )
+
+
 class AIUsage(Base):
     __tablename__ = "ai_usage"
 

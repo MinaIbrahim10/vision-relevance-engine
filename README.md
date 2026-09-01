@@ -273,3 +273,37 @@ Possible recommendations are:
 
 The QA agent never writes the final human decision. A reviewer still uses
 the review workflow to approve or reject the suggestion.
+
+## Docker
+
+Build and start the API and persistent background worker:
+
+    docker compose up --build
+
+The API is exposed at:
+
+    http://localhost:8000
+
+Health check:
+
+    GET /health
+
+The local Docker configuration connects to Ollama running on the host at
+`host.docker.internal:11434`.
+
+Both API and worker use the same persisted database volume.
+
+## Continuous Integration
+
+GitHub Actions runs on every push to `main` and on pull requests.
+
+CI verifies:
+
+- Python 3.14 dependency installation
+- Python compilation
+- complete pytest suite
+- Alembic migrations on a fresh database
+- presence of all required persistence tables
+
+No AI API secret or Ollama model is required by CI because model-dependent
+tests use deterministic providers.

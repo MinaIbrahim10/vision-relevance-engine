@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+__pycache__
+.pytest_cache
+*.pyc
+*.pyo
+*.db
+.env
+data/corpus/*.jpg
+artifacts/

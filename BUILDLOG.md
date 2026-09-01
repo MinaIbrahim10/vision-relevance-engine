@@ -158,3 +158,15 @@ The QA agent:
 
 This preserves a real human-in-the-loop boundary rather than presenting an
 AI recommendation as final approval.
+
+## Session 9 — Docker and continuous integration
+
+Added reproducible production packaging and automated verification.
+
+The Docker setup runs the API and persistent background worker separately
+while sharing database storage. Local Ollama remains outside the containers
+and is reached through the host gateway.
+
+GitHub Actions now installs the project on Python 3.14, compiles the source,
+runs the complete test suite, and applies all Alembic migrations against a
+fresh database.

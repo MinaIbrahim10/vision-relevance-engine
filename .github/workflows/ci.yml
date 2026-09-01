@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version:
+          - "3.14"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade packaging tools
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile
+        run: python -m compileall -q app scripts alembic
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Migration smoke test
+        env:
+          DATABASE_URL: sqlite:////tmp/vision_ci.db
+        run: |
+          python -m alembic upgrade head
+          python - <<'PY'
+          from sqlalchemy import inspect
+          from app.db import engine
+
+          tables = set(inspect(engine).get_table_names())
+
+          required = {
+              "tenants",
+              "images",
+              "posts",
+              "suggestions",
+              "background_jobs",
+              "job_alerts",
+              "qa_reviews",
+              "ai_usage",
+          }
+
+          assert required <= tables
+          print("CI migration smoke: PASS")
+          PY

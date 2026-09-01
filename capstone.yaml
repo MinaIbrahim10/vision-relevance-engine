@@ -1,11 +1,20 @@
-run: "docker compose up --build"
-seed: "python -m scripts.seed"
-test: "pytest -q"
-base_url: "http://localhost:8000"
+name: vision-relevance-engine
+
+run: docker compose up --build
+
+seed: docker compose exec api python -m scripts.seed
+
+test: python -m pytest -q
+
+base_url: http://localhost:8000
+
+health_endpoint: /health
+
 endpoints:
-  health: "/health"
-  images: "/api/v1/images"
-  posts: "/api/v1/posts"
-  matches: "/api/v1/posts/{post_id}/images"
-  reviews: "/api/v1/reviews"
-  evaluation: "/api/v1/evaluation"
+  - /api/v1/images
+  - /api/v1/posts
+  - /api/v1/jobs/process-images
+  - /api/v1/reviews
+  - /api/v1/evaluation
+  - /api/v1/usage
+  - /api/v1/alerts

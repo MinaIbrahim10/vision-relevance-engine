@@ -68,3 +68,16 @@ the signals and rationale used to reach that recommendation.
 
 The agent deliberately does not mutate the final human decision field.
 Human approval or rejection remains a separate explicit action.
+
+## Production Packaging
+
+The repository includes:
+
+- a Python 3.14 Docker image;
+- Docker Compose API and background-worker services;
+- persistent application storage;
+- host-Ollama integration;
+- GitHub Actions CI;
+- clean-environment migration verification.
+
+The automated test suite does not depend on external AI services.

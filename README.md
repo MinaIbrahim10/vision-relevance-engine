@@ -307,3 +307,34 @@ CI verifies:
 
 No AI API secret or Ollama model is required by CI because model-dependent
 tests use deterministic providers.
+
+## Fallback Image Generation
+
+When the normal matching pipeline returns no confident existing image,
+the system can optionally generate a fallback image.
+
+Endpoint:
+
+    POST /api/v1/posts/{post_id}/fallback-image
+
+Generation is intentionally blocked when a confident existing image already
+matches the post. This prevents unnecessary model usage and preserves the
+preferred library-first workflow.
+
+Generated fallback images are always marked:
+
+    needs_review = true
+
+They therefore enter the human-review path instead of being trusted
+automatically.
+
+The production provider is configurable. The repository includes a
+Pollinations provider and an offline deterministic provider used only by
+tests.
+
+Live generation requires:
+
+    IMAGE_GENERATION_PROVIDER=pollinations
+    POLLINATIONS_API_KEY=<secret>
+
+The API key must never be committed to the repository.

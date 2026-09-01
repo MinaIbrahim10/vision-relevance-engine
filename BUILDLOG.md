@@ -170,3 +170,20 @@ and is reached through the host gateway.
 GitHub Actions now installs the project on Python 3.14, compiles the source,
 runs the complete test suite, and applies all Alembic migrations against a
 fresh database.
+
+## Session 10 — Fallback image generation
+
+Implemented provider-based fallback image generation.
+
+The workflow is intentionally library-first: generation is allowed only
+when the existing image matcher fails to produce a confident candidate.
+
+Fallback images are persisted as tenant-owned assets, generation usage is
+recorded, and every generated result is marked for human review.
+
+The production provider integration is Pollinations. Tests use an offline
+deterministic provider so CI does not require credentials or external
+network access.
+
+A live provider execution is not claimed until an authenticated smoke test
+is run successfully.

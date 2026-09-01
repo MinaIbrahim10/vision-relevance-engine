@@ -678,3 +678,70 @@ def get_qa_agent_result(
     return serialize_qa_review(
         review
     )
+
+
+@app.post(
+    "/api/v1/posts/{post_id}/fallback-image",
+    status_code=201,
+)
+def generate_fallback_image(
+    post_id: int,
+    db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
+):
+    from app.services.fallback import (
+        generate_fallback_for_post,
+    )
+
+    post = (
+        db.query(Post)
+        .filter(
+            Post.id == post_id,
+            Post.tenant_id == tenant.id,
+        )
+        .first()
+    )
+
+    if not post:
+        raise HTTPException(
+            status_code=404,
+            detail="Post not found",
+        )
+
+    # Only allow fallback when the normal matcher
+    # cannot produce a confident candidate.
+    suggestion = match_post(
+        db,
+        post,
+    )
+
+    if suggestion.accepted_by_guard:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "A confident existing image match "
+                "already exists; fallback generation "
+                "was not used."
+            ),
+        )
+
+    try:
+        image = (
+            generate_fallback_for_post(
+                db,
+                post=post,
+            )
+        )
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=str(exc),
+        )
+
+    return {
+        "image_id": image.id,
+        "filename": image.filename,
+        "path": image.path,
+        "needs_review": image.needs_review,
+        "generated": True,
+    }

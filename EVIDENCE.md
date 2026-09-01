@@ -81,3 +81,19 @@ The repository includes:
 - clean-environment migration verification.
 
 The automated test suite does not depend on external AI services.
+
+## Stretch Capability — Fallback Image Generation
+
+The fallback workflow is invoked only after the normal matcher returns no
+confident candidate.
+
+Generated images:
+
+- are tenant-owned;
+- are recorded as AI usage;
+- are marked for mandatory human review;
+- do not replace a confident existing library match.
+
+Automated tests exercise the complete workflow with a deterministic offline
+generation provider. Live external generation is reported as evidence only
+after an authenticated provider run succeeds.

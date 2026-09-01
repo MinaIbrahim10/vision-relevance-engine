@@ -22,6 +22,11 @@ class Settings(BaseSettings):
 
     ai_budget_usd: float = 1.00
 
+    image_generation_provider: str = "disabled"
+    pollinations_api_key: str = ""
+    pollinations_base_url: str = "https://gen.pollinations.ai"
+    pollinations_image_model: str = "flux"
+
     max_job_attempts: int = 3
     worker_poll_seconds: float = 2.0
 

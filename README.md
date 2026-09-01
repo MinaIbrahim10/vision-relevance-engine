@@ -4,7 +4,63 @@ A production-oriented AI image understanding and semantic content-matching engin
 
 The system analyzes image libraries, generates structured metadata, embeds image and article semantics, ranks relevant images, and applies a mismatch guard that refuses unsafe or low-confidence recommendations.
 
-## Planned capabilities
+<!-- ARCHITECTURE_DIAGRAM_START -->
+
+## Architecture Diagram
+
+    Image Library
+         |
+         v
+    Background Job
+         |
+         +--------------------+
+         |                    |
+         v                    v
+    Vision Model         Retry / Alert
+         |
+         v
+    Validated Metadata
+    tags / caption /
+    confidence
+         |
+         v
+    Image Embedding -------------------+
+                                       |
+                                       v
+    Article/Post -> Post Embedding -> Cosine Ranking
+                                       |
+                                       v
+                                Mismatch Guard
+                           tags + confidence +
+                           calibrated threshold
+                              /             \
+                             /               \
+                            v                 v
+                    Suggested Image    No Confident Match
+                            |
+                            v
+                       QA Recommendation
+                            |
+                            v
+                       Human Review
+                    approve / reject
+
+    Persistence
+      -> tenants
+      -> images + embeddings
+      -> posts + embeddings
+      -> suggestions
+      -> background jobs
+      -> job alerts
+      -> QA reviews
+      -> AI usage
+
+HTTP routing, service logic, AI providers, persistence, and worker execution
+are separated into independent layers.
+
+<!-- ARCHITECTURE_DIAGRAM_END -->
+
+## Capabilities
 
 ### Core
 - Structured vision classification with schema validation
@@ -30,7 +86,12 @@ The system analyzes image libraries, generates structured metadata, embeds image
 
 ## Status
 
-Initial design and repository setup.
+Core implementation is complete and evaluated on the repository's bounded
+40-image / 10-post evaluation set.
+
+All five listed stretch workflows are implemented. The fallback-generation
+workflow is tested with the deterministic offline provider; the optional
+credentialed external generation provider is not claimed as live-verified.
 
 **Measured evaluation:** 10/10 correct, top-1 precision **1.00** on the repository's 10-post bounded evaluation set.
 
@@ -338,3 +399,97 @@ Live generation requires:
     POLLINATIONS_API_KEY=<secret>
 
 The API key must never be committed to the repository.
+
+<!-- FINAL_RUN_GUIDE_START -->
+
+## Clean-Machine Run Guide
+
+### Prerequisites
+
+The reproducible real-model path uses Docker plus local Ollama.
+
+Install Ollama and pull the two free local models:
+
+    ollama pull llava
+    ollama pull bge-m3
+
+Confirm Ollama is running:
+
+    ollama list
+
+Start the API and background worker:
+
+    docker compose up -d --build
+
+Download the reproducible licensed image corpus and seed the demo database:
+
+    docker compose exec api sh -c "python -m scripts.download_corpus && python -m scripts.seed"
+
+Check API health:
+
+    curl http://localhost:8000/health
+
+Run the complete automated test suite inside the container:
+
+    docker compose exec api python -m pytest -q
+
+Stop the services:
+
+    docker compose down
+
+The machine-readable equivalents are also defined in `capstone.yaml`.
+
+## Vector Storage Decision
+
+The capstone corpus contains 40 images, so the project deliberately avoids
+adding a heavyweight approximate-nearest-neighbor service.
+
+Image and post embeddings are persisted with their records and ranked using
+cosine similarity in the matching layer.
+
+This is an intentional bounded-scale design decision: the capstone brief
+explicitly allows in-database vectors at this corpus size. The matching
+service is isolated so a dedicated ANN/vector database can replace the
+bounded cosine scan without changing the HTTP API or safety guard.
+
+## Limitations
+
+- The measured `1.00` top-1 precision is only for this repository's labeled
+  10-post evaluation set. It is not a general model-accuracy claim.
+- The real measured AI pipeline uses local `llava:latest` and `bge-m3:latest`
+  through Ollama. Results can vary with different model versions.
+- The corpus is intentionally bounded to 40 images and five animal subjects;
+  this project is not a general-purpose image search engine.
+- Cosine ranking is performed over the bounded persisted vector set rather
+  than a dedicated approximate-nearest-neighbor service.
+- SQLite is used for the reproducible local deployment. A higher-write
+  production deployment would normally move the same SQLAlchemy models to a
+  server database such as PostgreSQL.
+- Confidence values from the vision model are treated as signals, not truth;
+  low-confidence results remain reviewable.
+- Fallback image generation is optional. Its offline workflow is tested, but
+  the credentialed external Pollinations provider was not live-verified
+  because no provider credential was available.
+- Generated fallback images are never automatically approved; they are
+  marked for human review.
+- Docker expects Ollama to be reachable from the host through
+  `host.docker.internal`.
+
+<!-- FINAL_RUN_GUIDE_END -->
+
+### Host Port Override
+
+The default API address is:
+
+    http://localhost:8000
+
+If port 8000 is already occupied on the host, choose another host port without
+changing the container or API configuration:
+
+    HOST_PORT=18000 docker compose up -d
+
+Then access:
+
+    http://localhost:18000
+
+This override is optional; the evaluator-facing default remains port 8000.

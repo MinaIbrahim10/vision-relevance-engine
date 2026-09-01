@@ -187,3 +187,28 @@ network access.
 
 A live provider execution is not claimed until an authenticated smoke test
 is run successfully.
+
+## Session 11 — Final submission audit and packaging
+
+The repository was reviewed against the capstone brief instead of treating
+passing unit tests as equivalent to submission readiness.
+
+Final packaging work included:
+
+- adding the MIT license;
+- aligning `.env.example` with the providers the code actually supports;
+- documenting every required environment variable;
+- adding an explicit architecture diagram;
+- documenting the bounded vector-storage design decision;
+- adding clean-machine Docker/Ollama setup and seed commands;
+- adding an honest limitations section;
+- removing the Docker migration race by starting the worker only after the
+  API is healthy;
+- making `capstone.yaml` commands Docker-contained;
+- adding a requirement-to-evidence checklist;
+- running a fresh migration audit, Docker configuration audit, secret scan,
+  and complete test suite.
+
+Fallback external generation remains explicitly documented as not
+live-verified without credentials rather than being presented as executed
+evidence.

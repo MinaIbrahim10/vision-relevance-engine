@@ -97,3 +97,34 @@ Generated images:
 Automated tests exercise the complete workflow with a deterministic offline
 generation provider. Live external generation is reported as evidence only
 after an authenticated provider run succeeds.
+
+## Final Docker Runtime Verification
+
+The final Docker Compose stack was executed successfully.
+
+Recorded runtime verification:
+
+    API container: healthy
+    API health endpoint: PASS
+    Background worker: running
+    Tests inside Docker: 31 passed
+    Docker test exit code: 0
+    docker compose config: PASS
+    Docker runtime audit: PASS
+
+The local machine already had another service intermittently occupying host
+port 8000 during the audit. To isolate that host-specific conflict without
+changing the evaluator default, Docker Compose supports:
+
+    HOST_PORT=18000 docker compose up -d
+
+The default remains:
+
+    http://localhost:8000
+
+The successful isolated runtime audit used:
+
+    0.0.0.0:18000 -> container port 8000
+
+This confirms that the application containers, API health check, background
+worker, migrations, and test suite run correctly together.

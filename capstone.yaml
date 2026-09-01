@@ -1,10 +1,10 @@
 name: vision-relevance-engine
 
-run: docker compose up --build
+run: docker compose up -d --build
 
-seed: docker compose exec api python -m scripts.seed
+seed: docker compose exec api sh -c "python -m scripts.download_corpus && python -m scripts.seed"
 
-test: python -m pytest -q
+test: docker compose exec api python -m pytest -q
 
 base_url: http://localhost:8000
 

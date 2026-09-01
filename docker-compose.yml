@@ -9,47 +9,84 @@ services:
     environment:
       APP_ENV: development
       DATABASE_URL: sqlite:////data/vision_relevance.db
+      DEMO_API_KEY: demo-local-key
+
       VISION_PROVIDER: ollama
       EMBEDDING_PROVIDER: ollama
+
       OLLAMA_BASE_URL: http://host.docker.internal:11434
       OLLAMA_VISION_MODEL: llava:latest
       EMBEDDING_MODEL: bge-m3:latest
+
       MIN_VISION_CONFIDENCE: "0.60"
       MIN_SIMILARITY_SCORE: "0.45"
+      DUPLICATE_THRESHOLD: "0.94"
+
       AI_BUDGET_USD: "1.00"
+      MAX_JOB_ATTEMPTS: "3"
+      WORKER_POLL_SECONDS: "2.0"
+
+      IMAGE_GENERATION_PROVIDER: disabled
+
     volumes:
       - app_data:/data
       - ./data:/app/data
+
     ports:
-      - "8000:8000"
+      - "${HOST_PORT:-8000}:8000"
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
   worker:
     build: .
-    command: >
-      sh -c "
-      python -m alembic upgrade head &&
-      python -m app.worker
-      "
+    command: python -m app.worker
+
     environment:
       APP_ENV: development
       DATABASE_URL: sqlite:////data/vision_relevance.db
+      DEMO_API_KEY: demo-local-key
+
       VISION_PROVIDER: ollama
       EMBEDDING_PROVIDER: ollama
+
       OLLAMA_BASE_URL: http://host.docker.internal:11434
       OLLAMA_VISION_MODEL: llava:latest
       EMBEDDING_MODEL: bge-m3:latest
+
       MIN_VISION_CONFIDENCE: "0.60"
       MIN_SIMILARITY_SCORE: "0.45"
+      DUPLICATE_THRESHOLD: "0.94"
+
       AI_BUDGET_USD: "1.00"
+      MAX_JOB_ATTEMPTS: "3"
+      WORKER_POLL_SECONDS: "2.0"
+
+      IMAGE_GENERATION_PROVIDER: disabled
+
     volumes:
       - app_data:/data
       - ./data:/app/data
+
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
 volumes:
   app_data:

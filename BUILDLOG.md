@@ -132,3 +132,13 @@ The test suite now covers:
 
 This complements the Alembic migration and tenant-aware schema already
 verified against a fresh database.
+
+## Session 7 — Alt text and near-duplicate detection
+
+Implemented two capstone stretch capabilities:
+
+- automatic alt-text generation from structured vision metadata;
+- near-duplicate image detection using perceptual hashes.
+
+Both capabilities are exposed through tenant-scoped API endpoints and
+covered by executable tests, including cross-tenant duplicate isolation.

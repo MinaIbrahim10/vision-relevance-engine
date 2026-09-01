@@ -438,3 +438,170 @@ def run_evaluation(
         db,
         tenant.id,
     )
+
+
+@app.get(
+    "/api/v1/images/{image_id}/alt-text"
+)
+def image_alt_text(
+    image_id: int,
+    db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
+):
+    from app.services.alt_text import (
+        generate_alt_text,
+    )
+
+    image = (
+        db.query(ImageAsset)
+        .filter(
+            ImageAsset.id == image_id,
+            ImageAsset.tenant_id
+            == tenant.id,
+        )
+        .first()
+    )
+
+    if not image:
+        raise HTTPException(
+            status_code=404,
+            detail="Image not found",
+        )
+
+    alt_text = generate_alt_text(
+        image
+    )
+
+    image.alt_text = alt_text
+
+    db.add(image)
+    db.commit()
+
+    return {
+        "image_id": image.id,
+        "alt_text": alt_text,
+        "source": (
+            "vision_metadata"
+        ),
+    }
+
+
+@app.get(
+    "/api/v1/images/{image_id}/duplicates"
+)
+def image_duplicates(
+    image_id: int,
+    db: Session = Depends(get_db),
+    tenant: Tenant = Depends(get_tenant),
+):
+    from app.config import get_settings
+    from app.services.duplicates import (
+        average_hash,
+        duplicate_similarity,
+    )
+
+    image = (
+        db.query(ImageAsset)
+        .filter(
+            ImageAsset.id == image_id,
+            ImageAsset.tenant_id
+            == tenant.id,
+        )
+        .first()
+    )
+
+    if not image:
+        raise HTTPException(
+            status_code=404,
+            detail="Image not found",
+        )
+
+    try:
+        source_hash = (
+            image.perceptual_hash
+            or average_hash(
+                image.path
+            )
+        )
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "Image file is unavailable "
+                "for duplicate analysis"
+            ),
+        )
+
+    image.perceptual_hash = source_hash
+    db.add(image)
+
+    threshold = (
+        get_settings()
+        .duplicate_threshold
+    )
+
+    matches = []
+
+    candidates = (
+        db.query(ImageAsset)
+        .filter(
+            ImageAsset.tenant_id
+            == tenant.id,
+            ImageAsset.id
+            != image.id,
+        )
+        .all()
+    )
+
+    for candidate in candidates:
+        try:
+            candidate_hash = (
+                candidate.perceptual_hash
+                or average_hash(
+                    candidate.path
+                )
+            )
+        except FileNotFoundError:
+            continue
+
+        candidate.perceptual_hash = (
+            candidate_hash
+        )
+
+        similarity = (
+            duplicate_similarity(
+                source_hash,
+                candidate_hash,
+            )
+        )
+
+        db.add(candidate)
+
+        if similarity >= threshold:
+            matches.append(
+                {
+                    "image_id":
+                    candidate.id,
+                    "filename":
+                    candidate.filename,
+                    "similarity":
+                    round(
+                        similarity,
+                        6,
+                    ),
+                }
+            )
+
+    db.commit()
+
+    matches.sort(
+        key=lambda item:
+        item["similarity"],
+        reverse=True,
+    )
+
+    return {
+        "image_id": image.id,
+        "threshold": threshold,
+        "duplicates": matches,
+    }

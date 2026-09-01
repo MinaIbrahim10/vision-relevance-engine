@@ -42,3 +42,18 @@ correct match and the strongest tested unrelated match.
 
 These results describe this repository's recorded evaluation set only and
 are not presented as general model accuracy.
+
+## Stretch Capability — Automatic Alt Text
+
+Vision metadata is exposed through a tenant-scoped alt-text API.
+The implementation prefers the generated vision caption and falls back
+to structured subject/attribute metadata when necessary.
+
+## Stretch Capability — Near-Duplicate Detection
+
+Images can be compared through perceptual hashes. Duplicate candidates
+are scored and returned only when they meet the configured similarity
+threshold.
+
+Duplicate scans are tenant-scoped so images owned by another tenant are
+not considered candidates.
